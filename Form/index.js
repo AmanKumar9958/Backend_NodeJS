@@ -1,11 +1,16 @@
 const express = require('express');
 const app = express();
+const path = require('path');
 
+// rendering the HTML..
 app.set('view engine', 'ejs');
 
 // when using post method to send data to the server, we have to use these two middleware (builtin)..
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+
+// adding CSS file..
+app.use(express.static('public'));
 
 app.get('/', (req, res) => {
     res.render('index.ejs')

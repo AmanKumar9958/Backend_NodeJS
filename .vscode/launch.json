@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "d:/Documents/Programming/WebDevelopment/Backend_NodeJS/Middleware",
-      "program": "d:/Documents/Programming/WebDevelopment/Backend_NodeJS/Middleware/build/Debug/outDebug",
+      "cwd": "d:/Documents/Programming/WebDevelopment/Backend_NodeJS/public/CSS",
+      "program": "d:/Documents/Programming/WebDevelopment/Backend_NodeJS/public/CSS/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
