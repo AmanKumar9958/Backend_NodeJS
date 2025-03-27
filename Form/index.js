@@ -2,6 +2,9 @@ const express = require('express');
 const app = express();
 const path = require('path');
 
+// Calling the schema from mongoose..
+const userModel = require('../Mongo/Models/user')
+
 // rendering the HTML..
 app.set('view engine', 'ejs');
 
