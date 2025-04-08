@@ -2,8 +2,11 @@ const express = require('express');
 const app = express();
 const path = require('path');
 
-// Calling the schema from mongoose..
+// Calling the schema from mongoose that we have created..
 const userModel = require('../Mongo/Models/user')
+
+// Connecting to the database..
+const connection = require('../Mongo/Config/db')
 
 // rendering the HTML..
 app.set('view engine', 'ejs');
@@ -35,9 +38,27 @@ app.get('/contact', (req, res) => {
 // })
 
 // post method..
-app.post('/send', (req, res) => {
-    console.log(req.body);
-    res.send('Data received')
+app.post('/send', async (req, res) => {
+    // console.log(req.body);
+
+    // fetching the data from the form..
+    const { username, email, password, gender } = req.body
+    await userModel.create({
+        username: username,
+        email: email,
+        password: password,
+        gender: gender,
+    })
+    res.redirect('/all-users')
+})
+
+// Fetching the data from the database..
+app.get('/all-users', async (req, res) => {
+    userModel.find({
+        // username: 'Sunny',
+    }).then((users) => {
+        res.render('users.ejs', { users: users })
+    })
 })
 
 app.listen(2000)

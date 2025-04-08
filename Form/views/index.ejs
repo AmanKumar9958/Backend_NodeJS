@@ -9,9 +9,27 @@
 <body>
     <div style="display: flex; flex-direction: column; gap: 5vh;">
         <form action="/send" method="post">
-            <input name="UserName" type="text" placeholder="Enter your username..">
-            <input name="E-mail" type="email" placeholder="Enter your email..">
-            <input name="Password" type="password" placeholder="Enter you password..">
+            <input name="username" type="text" placeholder="Enter your username..">
+
+            <input name="email" type="email" placeholder="Enter your email..">
+
+            <input name="password" type="password" placeholder="Enter you password..">
+
+            <label>
+                <input type="radio" name="gender" value="Male">
+                Male
+            </label>
+            
+            <label>
+                <input type="radio" name="gender" value="Female">
+                Female
+            </label>
+
+            <label>
+                <input type="radio" name="gender" value="Other">
+                Other
+            </label>
+
             <button>Submit</button>
         </form>
     </div>
