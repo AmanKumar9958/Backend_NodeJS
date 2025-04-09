@@ -61,4 +61,17 @@ app.get('/all-users', async (req, res) => {
     })
 })
 
+// updating user..
+app.get('/update-user', async (req, res) => {
+    userModel.findOneAndUpdate({
+        email: 'Sumit@sumit.com',
+    }, {
+        username: 'Sumit Kumar',
+        gender: 'Male'
+    }).then((user) => {
+        res.send('User updated')
+    })
+})
+
+
 app.listen(2000)
