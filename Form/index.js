@@ -73,5 +73,14 @@ app.get('/update-user', async (req, res) => {
     })
 })
 
+// deleting user..
+app.get('/delete-user', async (req, res) => {
+    userModel.findOneAndDelete({
+        username: 'Sumit Kumar',
+    }).then((user) => {
+        res.send('User deleted')
+    })
+})
+
 
 app.listen(2000)
