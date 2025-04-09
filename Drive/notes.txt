@@ -1,0 +1,5 @@
+1. for checking password, username and email we have install
+    express validator => npm install express-validator
+
+2. Path in the form for action filed will this:
+    action="/user/register" (/user is important as we are creating separate routes for each)
