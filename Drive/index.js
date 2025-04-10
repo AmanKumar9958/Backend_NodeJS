@@ -1,17 +1,27 @@
 const express = require('express');
 const userRouter = require('./routes/user.routes.js');
 
+// using the dotenv package..
+const dotenv = require('dotenv');
+dotenv.config();
+
 const app = express();
 
 app.set('view engine', 'ejs');
 
-// testing the created routes..
+// DB Connection..
+const connectionToDB = require('./config/db.js')
+connectionToDB();
+
+
+// for getting data in the console..
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// testing the created routes..
 app.use('/user', userRouter)
 
 
-app.listen(3000, () => {
-    console.log('Drive API is running on port 3000');
+app.listen(2704, () => {
+    console.log('Drive API is running on port 2704');
 })
