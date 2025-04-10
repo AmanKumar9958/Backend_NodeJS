@@ -8,3 +8,6 @@
     a. To use env, we have to install 'dotenv' package in our project
     b. Then in index.js file we have require that env package and also need to call that
     c. We have to add that .env in .gitignore file, because we don't upload env file on github.
+
+4. For password safety we have install:
+    bcrypt => npm install bcrypt

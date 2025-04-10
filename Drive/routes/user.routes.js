@@ -1,9 +1,14 @@
 const express = require('express');
 const router = express.Router();
 
-// for validation..
+// for email validation..
 const { body, validationResult } = require('express-validator');
 
+// for password hashing..
+const bcrypt = require('bcrypt')
+
+// requiring the schema..
+const userModel = require('../models/user.model')
 
 router.get('/', (req, res) => {
     res.render('index');
@@ -20,7 +25,7 @@ router.post('/register',
     body('email').trim().isEmail().isLength({min: 13}).withMessage('Invalid email address'),
     body('password').trim().isLength({ min: 5 }).withMessage('Password should be at least 5 characters long'),
     body('username').trim().isLength({ min: 3 }).withMessage('Username should be at least 3 characters long'),
-    (req, res) => {
+    async (req, res) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()){
         return res.status(400).json({
@@ -28,7 +33,16 @@ router.post('/register',
             message: 'Invalid data',
         })
     } else{
-        res.send('User registered successfully');
+        const { email, password, username } = req.body
+
+        const hashedPassword = await bcrypt.hash(password, 10)  // password: user password and 10: hash rounds
+
+        const newUser = await userModel.create({
+            email,
+            password: hashedPassword,
+            username,
+        })
+        res.json(newUser)
     }
 })
 
