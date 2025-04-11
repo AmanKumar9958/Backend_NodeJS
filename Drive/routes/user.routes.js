@@ -31,21 +31,29 @@ router.post('/register',
     async (req, res) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()){
-        return res.status(400).json({
-            errors: errors.array(),
-            message: 'Invalid data',
+        return res.status(400).render('register', {
+            error: errors.array()[0].msg
         })
     } else{
         const { email, password, username } = req.body
 
+        // checking if the user already exists..
+        const existingUser = await userModel.findOne({ email });
+        if(existingUser){
+            res.status(400).render('register',{
+                error: 'User already exists, try loginning instead'
+            })
+        }
+
         const hashedPassword = await bcrypt.hash(password, 10)  // password: user password and 10: hash rounds
+
 
         const newUser = await userModel.create({
             email,
             password: hashedPassword,
             username,
         })
-        res.json(newUser)
+        res.redirect('/user/login')
     }
 })
 
@@ -56,47 +64,38 @@ router.get('/login', (req, res) => {
 
 // route for sending login data to server..
 router.post('/login',
-    // validating the data..
-    body('username').trim().isLength({min: 3}).withMessage('Invalid username'),
+    body('username').trim().isLength({ min: 3 }).withMessage('Invalid username'),
     body('password').trim().isLength({ min: 5 }).withMessage('Password should be at least 5 characters long'),
     async (req, res) => {
         const errors = validationResult(req);
-        if(!errors.isEmpty()){
-            return res.status(400).json({
-                errors: errors.array(),
-                message: 'Invalid data',
-            })
+        if (!errors.isEmpty()) {
+            return res.render('login', { error: 'Invalid input data' });
         }
-        // finding single user..
+
         const { username, password } = req.body;
-        const singleUser = await userModel.findOne({
-            username: username,
-        })
-        if(!singleUser){
-            return res.status(400).json({
-                message: 'Username or password is incorrect',
-            })
+        const singleUser = await userModel.findOne({ username });
+
+        if (!singleUser) {
+            return res.render('login', { error: 'Username or password is incorrect' });
         }
 
-        // comparing the password..
-        const isPasswordMatch = await bcrypt.compare(password, singleUser.password)
-        if(!isPasswordMatch){
-            return res.status(400).json({
-                message: 'Username or password is incorrect',
-            })
+        const isPasswordMatch = await bcrypt.compare(password, singleUser.password);
+        if (!isPasswordMatch) {
+            return res.render('login', { error: 'Username or password is incorrect' });
         }
 
-        // if everything is correct..
-        const token = jwt.sign({
-            user_id: singleUser._id,
-            username: singleUser.username,
-            email: singleUser.email,
-        },
-            process.env.JWT_SECRET,
-        )
-        res.cookie('token', token)
-        res.send("User login successfully")
-})
+        const token = jwt.sign(
+            {
+                user_id: singleUser._id,
+                username: singleUser.username,
+                email: singleUser.email,
+            },
+            process.env.JWT_SECRET
+        );
+        res.cookie('token', token);
+        res.send('User login successfully');
+    }
+);
 
 
 
