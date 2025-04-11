@@ -5,6 +5,10 @@ const userRouter = require('./routes/user.routes.js');
 const dotenv = require('dotenv');
 dotenv.config();
 
+// importing the cookies package..
+const cookieParser = require('cookie-parser');
+cookieParser();
+
 const app = express();
 
 app.set('view engine', 'ejs');
