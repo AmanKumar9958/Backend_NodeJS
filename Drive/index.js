@@ -1,5 +1,6 @@
 const express = require('express');
 const userRouter = require('./routes/user.routes.js');
+const indexRouter = require('./routes/index.routes.js');
 
 // using the dotenv package..
 const dotenv = require('dotenv');
@@ -23,6 +24,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // testing the created routes..
+app.use('/', indexRouter);
 app.use('/user', userRouter)
 
 
